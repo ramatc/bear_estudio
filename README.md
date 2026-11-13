@@ -11,7 +11,7 @@ npm run build     # type-check (astro check) + static build to dist/
 npm run preview   # serve the production build
 ```
 
-Requires Node.js 22+.
+Requires Node.js 22.23.4 or newer (Astro's minimum).
 
 ## Add a project
 
