@@ -1,0 +1,102 @@
+---
+import { Image } from 'astro:assets';
+import pandaShirt from '@/assets/services/panda-shirt.png';
+import rafikoShirt from '@/assets/services/rafiko-shirt.png';
+import flower from '@/assets/services/flower.svg';
+import rafikoDog from '@/assets/services/rafiko-dog.svg';
+import ladoB from '@/assets/services/lado-b.svg';
+import aflorar from '@/assets/services/aflorar.svg';
+
+type ServiceId = 'web' | 'branding' | 'redes' | 'contenido';
+
+const services: { id: ServiceId; label: string }[] = [
+  { id: 'web', label: 'Web' },
+  { id: 'branding', label: 'Branding' },
+  { id: 'redes', label: 'Redes sociales' },
+  { id: 'contenido', label: 'Creación de contenido' },
+];
+
+// Positions are percentages of the 1920x920 Figma frame; each sticker belongs to one service.
+const stickers = [
+  { for: 'web', src: pandaShirt, alt: 'Remera Panda Merch', left: 24.1, top: 3.4, width: 14.8, rotate: -13.93 },
+  { for: 'web', src: flower, alt: 'Sticker de flor', left: 58.4, top: 8.2, width: 7.7, rotate: 0 },
+  { for: 'branding', src: rafikoDog, alt: 'Sticker de Rafiko', left: 72.4, top: 25.4, width: 12.6, rotate: 0 },
+  { for: 'branding', src: ladoB, alt: 'Logo Lado B', left: 8.1, top: 36, width: 14.4, rotate: -5.04 },
+  { for: 'redes', src: aflorar, alt: 'Logo Aflorar', left: 67.2, top: 82.6, width: 13.7, rotate: 0 },
+  { for: 'contenido', src: rafikoShirt, alt: 'Remera Rafiko', left: 7.4, top: 64.9, width: 12.2, rotate: 6.92 },
+] satisfies { for: ServiceId; [key: string]: unknown }[];
+---
+
+<section
+  id="servicios"
+  aria-labelledby="servicios-title"
+  class="services relative overflow-hidden bg-[#1d1d1d] px-gutter py-[clamp(4rem,8vw,9rem)] text-paper md:aspect-[1920/920] md:py-0"
+>
+  <h2 id="servicios-title" class="relative z-10 text-[clamp(0.875rem,1.09vw,1.3rem)] font-extralight md:absolute md:top-[12%] md:left-gutter">
+    [ SERVICIOS ]
+  </h2>
+
+  <ul
+    class="relative z-10 mt-10 flex flex-col items-center gap-[clamp(0.25rem,0.68vw,0.8rem)] text-center font-display text-hero leading-[0.912] md:absolute md:inset-0 md:mt-0 md:justify-center"
+  >
+    {
+      services.map((s) => (
+        <li>
+          <span data-service={s.id} tabindex="0" class="inline-block cursor-default outline-offset-8 transition-colors duration-300 hover:text-lime focus-visible:text-lime">
+            {s.label}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div aria-hidden="true" class="pointer-events-none mt-12 flex flex-wrap justify-center gap-6 md:absolute md:inset-0 md:mt-0 md:block">
+    {
+      stickers.map((st) => (
+        <div
+          data-for={st.for}
+          class="sticker w-28 md:absolute md:w-auto"
+          style={`--left:${st.left}%;--top:${st.top}%;--w:${st.width}%;--r:${st.rotate}deg`}
+        >
+          <Image src={st.src} alt="" class="h-auto w-full" widths={[320, 640]} sizes="(min-width: 768px) 15vw, 7rem" />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .sticker {
+    rotate: var(--r);
+  }
+
+  @media (min-width: 768px) {
+    .sticker {
+      left: var(--left);
+      top: var(--top);
+      width: var(--w);
+    }
+  }
+
+  /* Pointer devices: stickers stay hidden until their service is hovered or focused. */
+  @media (hover: hover) and (min-width: 768px) {
+    .sticker {
+      opacity: 0;
+      scale: 0.6;
+      translate: 0 1.5rem;
+      transition:
+        opacity 0.35s ease,
+        scale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+        translate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .services:has([data-service='web']:is(:hover, :focus-visible)) [data-for='web'],
+    .services:has([data-service='branding']:is(:hover, :focus-visible)) [data-for='branding'],
+    .services:has([data-service='redes']:is(:hover, :focus-visible)) [data-for='redes'],
+    .services:has([data-service='contenido']:is(:hover, :focus-visible)) [data-for='contenido'] {
+      opacity: 1;
+      scale: 1;
+      translate: 0 0;
+    }
+  }
+</style>

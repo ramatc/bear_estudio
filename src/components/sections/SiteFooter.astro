@@ -1,0 +1,41 @@
+---
+import { SITE } from '@/config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer id="contacto" class="relative overflow-hidden bg-[#1d1d1d] px-gutter pt-[clamp(3rem,5.7vw,7rem)] pb-[clamp(2rem,4vw,5rem)] text-paper">
+  <a href="/" aria-label="Bear Estudio, inicio" class="inline-flex flex-col items-center leading-none">
+    <span class="font-display text-[clamp(2rem,2.63vw,3.15rem)] tracking-wide">BEAR</span>
+    <span class="font-display text-[clamp(0.6rem,0.77vw,0.92rem)] font-light tracking-wide">ESTUDIO</span>
+  </a>
+
+  <div class="mt-[clamp(3rem,6vw,7rem)] flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
+    <p data-reveal class="font-display text-[clamp(1.75rem,2.9vw,3.5rem)] leading-[0.912] uppercase">
+      Estudio creativo<br />en Bs As, Arg.
+    </p>
+
+    <div data-reveal class="relative md:mr-[2%]">
+      <h2 class="font-display text-[clamp(3rem,5.34vw,6.4rem)] leading-[0.912]">CHARLEMOS</h2>
+      <a
+        href={`mailto:${SITE.email}`}
+        class="mt-[clamp(1rem,1.8vw,2rem)] inline-block text-[clamp(1rem,1.03vw,1.25rem)] underline-offset-4 hover:underline"
+      >
+        {SITE.email}
+      </a>
+      <span
+        aria-hidden="true"
+        class="absolute top-full right-[12%] rotate-[25deg] font-glyph text-[clamp(3rem,5.2vw,6.25rem)] leading-none text-lime"
+        >:)</span
+      >
+    </div>
+  </div>
+
+  <div class="mt-[clamp(5rem,9vw,10rem)] flex flex-col-reverse gap-6 text-[clamp(0.9rem,1.03vw,1.25rem)] md:flex-row md:items-center md:justify-between">
+    <p>Diseñada y desarrollada por Bear Estudio | {year}</p>
+    <ul class="flex gap-[clamp(1rem,1.6vw,2rem)] uppercase">
+      <li><a href={SITE.instagram} target="_blank" rel="noopener noreferrer" class="underline hover:text-lime">Instagram</a></li>
+      <li><a href="#main" class="underline hover:text-lime">Volver arriba ↑</a></li>
+    </ul>
+  </div>
+</footer>

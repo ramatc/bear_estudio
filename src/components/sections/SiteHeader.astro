@@ -1,0 +1,44 @@
+---
+interface Props {
+  tone?: 'light' | 'dark';
+  current?: 'servicios' | 'proyectos' | 'contacto';
+}
+
+const { tone = 'light', current } = Astro.props;
+
+const links = [
+  { id: 'servicios', href: '/#servicios', label: 'Servicios' },
+  { id: 'proyectos', href: '/proyectos', label: 'Proyectos' },
+  { id: 'contacto', href: '#contacto', label: 'Contacto' },
+] as const;
+
+// Home underlines "Contacto" as the primary call to action; inner pages underline the current section.
+const underlined = current ?? 'contacto';
+---
+
+<header class="px-gutter pt-[clamp(1.25rem,3.2vw,3.85rem)]">
+  <nav
+    aria-label="Principal"
+    class:list={[
+      'flex items-baseline justify-between border-b pb-[clamp(1rem,2.5vw,3rem)] font-display text-nav leading-none uppercase',
+      tone === 'dark' ? 'border-paper/40' : 'border-ink',
+    ]}
+  >
+    <a href="/" aria-label="Bear Estudio, inicio">BEAR__ESTUDIO</a>
+    <ul class="flex gap-[clamp(1rem,1.7vw,2rem)]">
+      {
+        links.map((l) => (
+          <li class:list={[{ 'hidden sm:block': l.id !== 'contacto' }]}>
+            <a
+              href={l.href}
+              aria-current={current === l.id ? 'page' : undefined}
+              class:list={['transition-opacity hover:opacity-60', { underline: underlined === l.id }]}
+            >
+              {l.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>

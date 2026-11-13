@@ -1,0 +1,22 @@
+---
+import paw from '@/assets/home/paw.svg?raw';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+const ringText = 'ARGENTINA - BUENOS AIRES - ';
+---
+
+<div class:list={['relative aspect-square', className]} aria-hidden="true">
+  <svg data-spin viewBox="0 0 200 200" class="absolute inset-0 size-full">
+    <defs>
+      <path id="paw-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+    </defs>
+    <text class="fill-current font-body text-[17px] tracking-[0.35em]">
+      <textPath href="#paw-ring">{ringText}</textPath>
+    </text>
+  </svg>
+  <span class="absolute inset-[30%] block [&>svg]:size-full [&>svg_path]:fill-current" set:html={paw} />
+</div>

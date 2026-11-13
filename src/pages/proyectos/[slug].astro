@@ -1,0 +1,123 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getProjects, type Project } from '@/lib/projects';
+import { SITE } from '@/config/site';
+import arrow from '@/assets/icons/arrow-up-right.svg?raw';
+
+export const getStaticPaths = (async () => {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, next: projects[(i + 1) % projects.length]! },
+  }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  project: Project;
+  next: Project;
+}
+
+const { project, next } = Astro.props;
+const { title, category, year, description, url, cover, gallery } = project.data;
+
+const meta = [
+  { label: 'Categoría', value: category },
+  ...(year ? [{ label: 'Año', value: String(year) }] : []),
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: title,
+  description,
+  genre: category,
+  ...(year ? { dateCreated: String(year) } : {}),
+  creator: { '@type': 'Organization', name: SITE.name },
+};
+---
+
+<BaseLayout
+  title={`${title} — ${SITE.name}`}
+  description={description}
+  image={cover?.src}
+  tone="dark"
+  current="proyectos"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="grid gap-[clamp(2rem,3vw,4rem)] px-gutter pt-[clamp(2rem,3.8vw,4.5rem)] pb-[clamp(4rem,8vw,10rem)] md:grid-cols-[minmax(0,23vw)_1fr]">
+    <header class="md:sticky md:top-8 md:self-start">
+      <h1 lang="es" class="overflow-hidden font-display text-[clamp(2.5rem,5.6vw,7.75rem)] leading-[0.912] break-words hyphens-auto uppercase">
+        <span data-detail-title class="block">{title}</span>
+      </h1>
+
+      <dl class="mt-[clamp(2rem,4.2vw,5rem)] flex flex-col gap-[clamp(1.5rem,3.4vw,4rem)] text-lead leading-[1.18]">
+        {
+          meta.map((m) => (
+            <div data-reveal>
+              <dt>{m.label}</dt>
+              <dd class="mt-[clamp(0.5rem,1vw,1.25rem)] font-semibold">{m.value}</dd>
+            </div>
+          ))
+        }
+        <div data-reveal>
+          <dt>Descripción</dt>
+          <dd class="mt-[clamp(0.5rem,1vw,1.25rem)] text-[clamp(0.95rem,1.35vw,1.62rem)] font-medium">{description}</dd>
+        </div>
+      </dl>
+
+      {
+        url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group mt-[clamp(2rem,4vw,5rem)] inline-flex items-center gap-2 font-display text-[clamp(1rem,1.4vw,1.7rem)] uppercase hover:text-lime"
+          >
+            Link a la web
+            <span class="size-[1em] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 [&>svg]:size-full" set:html={arrow} />
+          </a>
+        )
+      }
+    </header>
+
+    <div class="flex flex-col gap-[clamp(0.75rem,0.9vw,1.1rem)]">
+      {
+        gallery.length > 0 ? (
+          gallery.map((item, i) => (
+            <Image
+              src={item.src}
+              alt={item.alt}
+              widths={[640, 1200, 2000]}
+              sizes="(min-width: 768px) 60vw, 100vw"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              data-reveal={i === 0 ? undefined : true}
+              class="h-auto w-full"
+            />
+          ))
+        ) : (
+          <p class="grid aspect-[16/9] place-items-center border border-paper/30 text-paper/60">Imágenes en camino :)</p>
+        )
+      }
+    </div>
+  </article>
+
+  <nav aria-label="Siguiente proyecto" class="border-t border-paper/30 px-gutter py-[clamp(3rem,6vw,7rem)]">
+    <a href={`/proyectos/${next.id}`} class="group flex flex-col gap-2 hover:text-lime">
+      <span class="text-[clamp(0.875rem,1.09vw,1.3rem)] font-extralight">[ SIGUIENTE PROYECTO ]</span>
+      <span class="font-display text-[clamp(2.5rem,6.44vw,7.75rem)] leading-[0.912] uppercase transition-transform duration-500 group-hover:translate-x-4">
+        {next.data.title} →
+      </span>
+    </a>
+  </nav>
+</BaseLayout>
+
+<script>
+  import { gsap } from 'gsap';
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.from('[data-detail-title]', { yPercent: 110, duration: 1.1, ease: 'power4.out' });
+  }
+</script>

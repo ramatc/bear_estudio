@@ -1,0 +1,57 @@
+---
+import '@/styles/global.css';
+import SiteHeader from '@/components/sections/SiteHeader.astro';
+import SiteFooter from '@/components/sections/SiteFooter.astro';
+import { SITE } from '@/config/site';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  /** Visual tone of the page chrome. */
+  tone?: 'light' | 'dark';
+  /** Nav item to mark as current. */
+  current?: 'servicios' | 'proyectos' | 'contacto';
+}
+
+const { title, description = SITE.description, image, tone = 'light', current } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content={tone === 'dark' ? '#1d1d1d' : '#ffffff'} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {image && <meta property="og:image" content={new URL(image, Astro.site)} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
+  </head>
+  <body class:list={[tone === 'dark' ? 'bg-[#1d1d1d] text-paper' : 'bg-paper text-ink']}>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+    >
+      Saltar al contenido
+    </a>
+    <SiteHeader tone={tone} current={current} />
+    <main id="main"><slot /></main>
+    <SiteFooter />
+    <script>
+      import { initReveals } from '@/scripts/reveal';
+      initReveals();
+    </script>
+  </body>
+</html>

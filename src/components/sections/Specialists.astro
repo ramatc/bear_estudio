@@ -1,0 +1,53 @@
+---
+import PawBadge from '@/components/ui/PawBadge.astro';
+
+const statement = 'Especialistas en branding, diseño y desarrollo de sitios web, creación de contenido y redes sociales.';
+
+// Decorative stars, positioned as percentages of the 1920x567 Figma frame
+const stars = [
+  { left: 3, top: 20 },
+  { left: 19, top: 73 },
+  { left: 48, top: 14 },
+  { left: 48.5, top: 63 },
+  { left: 71.8, top: 22 },
+  { left: 96.2, top: 11 },
+];
+---
+
+<section
+  id="especialistas"
+  aria-label="Qué hacemos"
+  class="relative overflow-hidden border-b-[7px] border-paper bg-[#1d1d1d] px-gutter py-[clamp(4rem,9vw,10rem)] text-paper"
+>
+  {
+    stars.map((s) => (
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute -rotate-[42deg] font-glyph text-[clamp(0.9rem,1.25vw,1.5rem)] opacity-30"
+        style={`left:${s.left}%;top:${s.top}%`}
+      >
+        *
+      </span>
+    ))
+  }
+
+  <div class="relative grid items-center gap-12 md:grid-cols-[1fr_auto]">
+    <p
+      data-typewriter
+      aria-label={statement}
+      class="max-w-[19em] text-[clamp(1.5rem,2.5vw,3rem)] leading-[1.18]"
+    >
+      {statement}
+    </p>
+
+    <div class="flex flex-col items-start gap-[clamp(1.5rem,3vw,3.5rem)] md:items-end">
+      <PawBadge class="w-[clamp(7rem,10.5vw,12.5rem)] md:mr-[clamp(0rem,4vw,5rem)]" />
+      <p class="text-[clamp(1.125rem,1.78vw,2.125rem)] leading-[1.18]">Hacemos que tu marca destaque.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initSpecialists } from '@/scripts/specialists';
+  initSpecialists();
+</script>

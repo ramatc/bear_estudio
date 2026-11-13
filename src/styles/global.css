@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/work-sans/400.css';
+
+/* Coolvetica is not on a CDN: add the licensed file at public/fonts/coolvetica.woff2 */
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('/fonts/coolvetica.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@theme {
+  --color-ink: #000;
+  --color-paper: #fff;
+  --color-lime: #c4ea2d;
+  --font-display: 'Coolvetica', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-glyph: 'Work Sans', system-ui, sans-serif;
+  /* Fluid sizes derived from the 1920px Figma frame */
+  --text-hero: clamp(2.75rem, 6.44vw, 7.75rem);
+  --text-nav: clamp(1rem, 1.5625vw, 1.875rem);
+  --text-lead: clamp(1rem, 1.452vw, 1.75rem);
+  --spacing-gutter: clamp(1rem, 6.4vw, 7.6875rem);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    @apply bg-paper text-ink font-body;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-lime);
+    outline-offset: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

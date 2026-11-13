@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import cande from '@/assets/team/cande.png';
+import abru from '@/assets/team/abru.png';
+import rama from '@/assets/team/rama.png';
+import folder from '@/assets/icons/folder.png';
+import hourglass from '@/assets/icons/hourglass.png';
+import cursor from '@/assets/icons/cursor.png';
+
+// Positions are percentages of the 1920x727 Figma frame.
+const members = [
+  { name: 'Cande', photo: cande, left: 53.3, top: 22, width: 9.7, tagLeft: 60, tagTop: 47.5 },
+  { name: 'Abru', photo: abru, left: 24.8, top: 50, width: 7.8, tagLeft: 27.2, tagTop: 75.5 },
+  { name: 'Rama', photo: rama, left: 70.5, top: 48.8, width: 9.9, tagLeft: 73.4, tagTop: 76.5 },
+];
+
+const icons = [
+  { src: folder, left: 18.85, top: 52.3, width: 4.4 },
+  { src: hourglass, left: 63.3, top: 26.3, width: 2 },
+  { src: cursor, left: 67.55, top: 73.9, width: 2 },
+];
+
+const ghostStars = [
+  { left: 73, top: -34, size: 30, rotate: 25 },
+  { left: -7.8, top: 51, size: 30, rotate: 25 },
+  { left: 14.1, top: 9, size: 9.9, rotate: -113.67 },
+  { left: 82.5, top: 56.7, size: 9.9, rotate: -38.07 },
+];
+
+const pos = (o: { left: number; top: number }) => `left:${o.left}%;top:${o.top}%`;
+---
+
+<section
+  id="nosotros"
+  aria-labelledby="nosotros-title"
+  data-team
+  class="relative overflow-hidden border-b border-ink/30 bg-paper px-gutter py-16 text-[#1d1d1d] md:aspect-[1920/727] md:p-0"
+>
+  {
+    ghostStars.map((s) => (
+      <span
+        aria-hidden="true"
+        class="ghost-star pointer-events-none absolute font-glyph leading-none"
+        style={`${pos(s)};font-size:${s.size}vw;rotate:${s.rotate}deg`}
+      >
+        *
+      </span>
+    ))
+  }
+
+  <p class="relative text-center text-[clamp(0.875rem,1.09vw,1.3rem)] font-extralight md:absolute md:top-[15.3%] md:left-1/2 md:-translate-x-1/2">
+    [ NOSOTROS ]
+  </p>
+
+  <h2 id="nosotros-title" class="relative z-10 mt-6 text-center font-display text-[clamp(2.25rem,4.79vw,5.75rem)] leading-[0.912] uppercase md:static md:mt-0 md:[&>span]:z-10">
+    <span class="md:absolute md:top-[37.1%] md:left-[25.9%] md:whitespace-nowrap">Conocé al</span>
+    <span class="block md:absolute md:top-[56.7%] md:left-[34.9%] md:whitespace-nowrap">equipo de Bear</span>
+  </h2>
+
+  <button
+    type="button"
+    data-shape
+    aria-label="Cambiar figura"
+    class="absolute top-[4%] right-[8%] cursor-pointer font-glyph text-[clamp(4rem,9.24vw,11rem)] leading-none text-lime md:top-[29.7%] md:right-auto md:left-[65.3%]"
+  >
+    <span data-shape-glyph class="inline-block rotate-[25deg]">*</span>
+  </button>
+
+  <ul class="relative mt-10 flex items-end justify-center gap-6 md:static md:mt-0" aria-label="Integrantes">
+    {
+      members.map((m, i) => (
+        <li class="member w-1/3 max-w-40 md:absolute md:max-w-none" style={`--l:${m.left}%;--t:${m.top}%;--w:${m.width}%`}>
+          <button
+            type="button"
+            data-member={i}
+            aria-label={`Mezclar nombres (foto de ${m.name})`}
+            class="block w-full cursor-pointer transition-transform duration-300 hover:scale-105"
+          >
+            <Image src={m.photo} alt="" widths={[200, 400]} sizes="(min-width: 768px) 10vw, 33vw" class="h-auto w-full grayscale" />
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Name tags live apart from photos so they can trade places. -->
+  <div aria-hidden="true">
+    {
+      members.map((m, i) => (
+        <span
+          data-tag={i}
+          class="tag absolute border border-lime bg-ink px-[0.6em] py-[0.55em] font-display text-[clamp(0.7rem,0.72vw,0.87rem)] leading-none text-paper uppercase"
+          style={`--l:${m.tagLeft}%;--t:${m.tagTop}%`}
+        >
+          {m.name}
+        </span>
+      ))
+    }
+  </div>
+  <p class="sr-only">Somos {members.map((m) => m.name).join(', ')}.</p>
+
+  {
+    icons.map((ic) => (
+      <Image
+        src={ic.src}
+        alt=""
+        aria-hidden="true"
+        data-float
+        class="pointer-events-none absolute hidden h-auto md:block"
+        style={`${pos(ic)};width:${ic.width}%`}
+      />
+    ))
+  }
+</section>
+
+<style>
+  .ghost-star {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #e9e9e6;
+  }
+
+  .tag {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .member {
+      left: var(--l);
+      top: var(--t);
+      width: var(--w);
+    }
+
+    .tag {
+      display: block;
+      left: var(--l);
+      top: var(--t);
+    }
+  }
+</style>
+
+<script>
+  import { initTeam } from '@/scripts/team';
+  initTeam();
+</script>

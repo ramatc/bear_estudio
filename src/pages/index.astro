@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Specialists from '@/components/sections/Specialists.astro';
+import Services from '@/components/sections/Services.astro';
+import ProjectList from '@/components/sections/ProjectList.astro';
+import Team from '@/components/sections/Team.astro';
+import { getProjects } from '@/lib/projects';
+import { SITE } from '@/config/site';
+
+const projects = await getProjects();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: Astro.site?.href,
+  email: SITE.email,
+  description: SITE.description,
+  address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
+};
+---
+
+<BaseLayout title={`${SITE.name} — ${SITE.tagline}`}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <Hero />
+  <Specialists />
+  <Services />
+  <ProjectList projects={projects} initial={6} step={4} />
+  <Team />
+</BaseLayout>

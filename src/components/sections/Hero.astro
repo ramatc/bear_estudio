@@ -1,0 +1,56 @@
+---
+import ContactButton from '@/components/ui/ContactButton.astro';
+---
+
+<section
+  data-hero
+  aria-labelledby="hero-title"
+  class="relative flex min-h-[calc(100svh-6rem)] flex-col overflow-hidden px-gutter pb-[clamp(2.5rem,7vw,8rem)]"
+>
+  <div class="relative flex-1 pt-[clamp(2rem,5.4vw,6.5rem)]">
+    <p data-hero-fade aria-hidden="true" class="font-display text-lead">:)</p>
+
+    <p
+      data-hero-fade
+      class="absolute top-[clamp(1.5rem,3.4vw,4rem)] right-[18%] hidden font-display text-lead leading-[0.91] md:block"
+    >
+      diseño web, branding<br /><span class="inline-block pl-[4.3em]">y mucho más</span>
+    </p>
+
+    <span
+      data-glyph
+      aria-hidden="true"
+      class="pointer-events-none absolute top-0 right-[7.5%] rotate-[25deg] font-glyph text-[clamp(4rem,9.24vw,11rem)] leading-none text-lime"
+      >:)</span
+    >
+  </div>
+
+  <div class="relative">
+    <h1 id="hero-title" class="font-display text-hero leading-[0.912] tracking-[-0.02em] uppercase">
+      <span class="block overflow-hidden"><span data-hero-line class="block">Estudio creativo</span></span>
+      <span class="block overflow-hidden"><span data-hero-line class="block">en Bs As, Arg.</span></span>
+    </h1>
+    <p data-hero-fade class="mt-[clamp(0.75rem,1.2vw,1.5rem)] max-w-[62ch] text-lead leading-[1.18]">
+      Especialistas en branding, diseño y desarrollo de sitios web, creación de contenido y redes sociales.
+    </p>
+    <div data-hero-fade class="mt-[clamp(1.5rem,2.6vw,3rem)]"><ContactButton /></div>
+
+    <span
+      data-glyph
+      aria-hidden="true"
+      class="pointer-events-none absolute top-[35%] left-[56%] hidden -rotate-[42deg] font-glyph text-[clamp(5rem,12.4vw,15rem)] leading-none text-lime sm:block"
+      >*</span
+    >
+    <a
+      href="#especialistas"
+      aria-label="Bajar a la siguiente sección"
+      class="absolute right-0 bottom-0 rotate-90 font-glyph text-[clamp(3.5rem,7.84vw,9.4rem)] leading-[0.6] text-lime transition-transform hover:translate-x-2"
+      >→</a
+    >
+  </div>
+</section>
+
+<script>
+  import { initHero } from '@/scripts/hero';
+  initHero();
+</script>

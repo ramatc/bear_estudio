@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets';
+import type { Project } from '@/lib/projects';
+
+interface Props {
+  projects: Project[];
+  /** Rows visible before "Ver más"; omit to show every project. */
+  initial?: number;
+  /** Rows revealed per "Ver más" click (the design asks for 3 or 4). */
+  step?: number;
+  /** Heading level for the section label. */
+  headingTag?: 'h1' | 'h2';
+}
+
+const { projects, initial = projects.length, step = 4, headingTag: Heading = 'h2' } = Astro.props;
+const hasMore = projects.length > initial;
+---
+
+<section id="proyectos" aria-labelledby="proyectos-title" data-project-list data-step={step} class="relative bg-[#1d1d1d] px-gutter py-[clamp(3rem,6.6vw,8rem)] text-paper">
+  <Heading id="proyectos-title" class="text-[clamp(0.875rem,1.09vw,1.3rem)] font-extralight">[ PROYECTOS ]</Heading>
+
+  <ol class="mt-[clamp(1.5rem,2.5vw,3rem)]">
+    {
+      projects.map((p, i) => (
+        <li data-row hidden={i >= initial} class="border-b border-paper/70 last:border-b-0">
+          <a
+            href={`/proyectos/${p.id}`}
+            data-project-link
+            data-cover={p.data.cover ? i : undefined}
+            class="group grid grid-cols-[auto_1fr_auto] items-center gap-x-[clamp(1rem,2vw,2.5rem)] py-[clamp(1.1rem,2.1vw,2.5rem)] transition-colors duration-300 hover:text-lime focus-visible:text-lime"
+          >
+            <span class="w-[2ch] text-[clamp(0.75rem,0.92vw,1.1rem)] tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+            <span class="font-display text-[clamp(1.75rem,3.73vw,4.5rem)] leading-[0.912] transition-transform duration-500 ease-out group-hover:translate-x-3">
+              {p.data.title}
+            </span>
+            <span class="text-right text-[clamp(0.8rem,1.34vw,1.6rem)]">{p.data.tag}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+
+  <div class="mt-[clamp(1.5rem,2.5vw,3rem)] flex justify-end">
+    {
+      hasMore ? (
+        <button type="button" data-more class="cursor-pointer font-display text-nav uppercase underline hover:text-lime">
+          Ver más
+        </button>
+      ) : (
+        Heading === 'h2' && (
+          <a href="/proyectos" class="font-display text-nav uppercase underline hover:text-lime">
+            Ver más
+          </a>
+        )
+      )
+    }
+  </div>
+
+  <!-- Floating preview that follows the pointer on hover-capable devices. -->
+  <div data-preview aria-hidden="true" class="pointer-events-none fixed top-0 left-0 z-20 hidden w-[clamp(12rem,15.5vw,18.6rem)] opacity-0 [@media(hover:hover)]:block">
+    <div class="relative aspect-[298/372] -rotate-[1.89deg] overflow-hidden rounded-[20px] border border-paper shadow-[0_0_21px_0_var(--color-lime)]">
+      {
+        projects.map((p, i) =>
+          p.data.cover ? (
+            <Image
+              src={p.data.cover}
+              alt=""
+              data-preview-img={i}
+              widths={[300, 600]}
+              sizes="18.6rem"
+              class="absolute inset-0 size-full object-cover opacity-0"
+            />
+          ) : null,
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initProjectList } from '@/scripts/project-list';
+  initProjectList();
+</script>

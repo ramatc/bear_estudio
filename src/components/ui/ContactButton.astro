@@ -1,0 +1,27 @@
+---
+import paw from '@/assets/home/paw.svg?raw';
+
+interface Props {
+  href?: string;
+  label?: string;
+  class?: string;
+}
+
+const { href = '#contacto', label = 'Contactanos', class: className = '' } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={[
+    'group inline-flex items-center gap-2 rounded-full bg-ink p-[clamp(0.6rem,0.92vw,1.1rem)] pr-[clamp(1rem,1.2vw,1.4rem)] text-paper transition-transform duration-300 hover:-translate-y-0.5',
+    className,
+  ]}
+>
+  <span
+    class="grid size-[clamp(1.4rem,1.656vw,2rem)] place-items-center rounded-[15px] bg-paper transition-transform duration-500 group-hover:rotate-[20deg]"
+    aria-hidden="true"
+  >
+    <span class="block h-[72%] w-[66%] [&>svg]:size-full" set:html={paw} />
+  </span>
+  <span class="font-display text-[clamp(1rem,1.38vw,1.656rem)] leading-none uppercase">{label}</span>
+</a>
