@@ -23,6 +23,7 @@ const stars = [
     stars.map((s) => (
       <span
         aria-hidden="true"
+        data-star
         class="pointer-events-none absolute -rotate-[42deg] font-glyph text-[clamp(0.9rem,1.25vw,1.5rem)] opacity-30"
         style={`left:${s.left}%;top:${s.top}%`}
       >

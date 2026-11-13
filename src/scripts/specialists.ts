@@ -16,6 +16,23 @@ function splitChars(el: HTMLElement): HTMLElement[] {
   });
 }
 
+/** Background stars drift, spin and twinkle, each on its own randomized loop. */
+function animateStars(section: HTMLElement): void {
+  const rand = gsap.utils.random;
+  section.querySelectorAll<HTMLElement>('[data-star]').forEach((star) => {
+    gsap.to(star, { rotate: '+=360', duration: rand(10, 20), repeat: -1, ease: 'none' });
+    gsap.to(star, {
+      x: () => rand(-24, 24),
+      y: () => rand(-24, 24),
+      duration: rand(3, 6),
+      repeat: -1,
+      repeatRefresh: true,
+      ease: 'sine.inOut',
+    });
+    gsap.to(star, { opacity: rand(0.1, 0.6), duration: rand(1.5, 3), repeat: -1, yoyo: true, ease: 'sine.inOut', delay: rand(0, 2) });
+  });
+}
+
 export function initSpecialists(): void {
   const section = document.getElementById('especialistas');
   if (!section) return;
@@ -26,6 +43,8 @@ export function initSpecialists(): void {
   if (badge && !reduced) {
     gsap.to(badge, { rotate: 360, duration: 20, repeat: -1, ease: 'none', transformOrigin: '50% 50%' });
   }
+
+  if (!reduced) animateStars(section);
 
   const target = section.querySelector<HTMLElement>('[data-typewriter]');
   if (!target || reduced) return;
