@@ -16,6 +16,7 @@ const jsonLd = {
   name: SITE.name,
   url: Astro.site?.href,
   email: SITE.email,
+  sameAs: [SITE.instagram],
   description: SITE.description,
   address: { '@type': 'PostalAddress', addressLocality: 'Buenos Aires', addressCountry: 'AR' },
 };

@@ -4,7 +4,6 @@ export const SITE = {
   description:
     'Especialistas en branding, diseño y desarrollo de sitios web, creación de contenido y redes sociales.',
   email: 'bearweb.contacto@gmail.com',
-  // TODO: replace with the studio's real Instagram handle.
-  instagram: 'https://www.instagram.com/',
+  instagram: 'https://www.instagram.com/bear__estudio/',
   locale: 'es_AR',
 } as const;
