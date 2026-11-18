@@ -59,7 +59,20 @@ function setupPreview(root: HTMLElement): void {
     });
   });
 
-  root.querySelector('ol')?.addEventListener('pointerleave', () => {
-    gsap.to(preview, { opacity: 0, scale: 0.9, duration: 0.25 });
-  });
+  const list = root.querySelector('ol');
+  const hide = () => gsap.to(preview, { opacity: 0, scale: 0.9, duration: 0.25 });
+  list?.addEventListener('pointerleave', hide);
+
+  // Scrolling moves the list without firing pointer events, so a fast scroll
+  // could leave the preview stuck. Re-check what is under the pointer instead.
+  let pointer: { x: number; y: number } | undefined;
+  window.addEventListener('pointermove', (e) => (pointer = { x: e.clientX, y: e.clientY }), { passive: true });
+  window.addEventListener(
+    'scroll',
+    () => {
+      const under = pointer && document.elementFromPoint(pointer.x, pointer.y);
+      if (!under || !list?.contains(under)) hide();
+    },
+    { passive: true },
+  );
 }
