@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { class: className = '' } = Astro.props;
-const ringText = 'ARGENTINA - BUENOS AIRES - ';
+const ringText = 'BUENOS AIRES, ARGENTINA - BUENOS AIRES, ARGENTINA - ';
 ---
 
 <!-- Only the ring text spins; hovering swaps the paw for the lime asterisk. -->
@@ -16,7 +16,7 @@ const ringText = 'ARGENTINA - BUENOS AIRES - ';
       <path id="paw-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
     </defs>
     <!-- textLength = ring circumference (2π·78) so the phrase closes the full loop. -->
-    <text class="fill-current font-body text-[17px]">
+    <text class="fill-current font-body text-[13px]">
       <textPath href="#paw-ring" textLength="489" lengthAdjust="spacing">{ringText}</textPath>
     </text>
   </svg>
