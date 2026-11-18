@@ -93,10 +93,45 @@ const stickers = [
     .services:has([data-service='web']:is(:hover, :focus-visible)) [data-for='web'],
     .services:has([data-service='branding']:is(:hover, :focus-visible)) [data-for='branding'],
     .services:has([data-service='redes']:is(:hover, :focus-visible)) [data-for='redes'],
-    .services:has([data-service='contenido']:is(:hover, :focus-visible)) [data-for='contenido'] {
+    .services:has([data-service='contenido']:is(:hover, :focus-visible)) [data-for='contenido'],
+    .sticker.is-near {
       opacity: 1;
       scale: 1;
       translate: 0 0;
     }
   }
 </style>
+
+<script>
+  // Reveal the sticker closest to the pointer anywhere in the section, not only over the words.
+  const media = window.matchMedia('(hover: hover) and (min-width: 768px)');
+
+  document.querySelectorAll<HTMLElement>('.services').forEach((section) => {
+    const stickers = [...section.querySelectorAll<HTMLElement>('.sticker')];
+    let current: HTMLElement | null = null;
+
+    const setActive = (next: HTMLElement | null) => {
+      if (next === current) return;
+      current?.classList.remove('is-near');
+      next?.classList.add('is-near');
+      current = next;
+    };
+
+    section.addEventListener('pointermove', (e) => {
+      if (!media.matches || e.pointerType !== 'mouse') return;
+      let nearest: HTMLElement | null = null;
+      let best = Infinity;
+      for (const st of stickers) {
+        const r = st.getBoundingClientRect();
+        const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+        if (d < best) {
+          best = d;
+          nearest = st;
+        }
+      }
+      setActive(nearest);
+    });
+
+    section.addEventListener('pointerleave', () => setActive(null));
+  });
+</script>
