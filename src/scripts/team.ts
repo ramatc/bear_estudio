@@ -1,7 +1,5 @@
 import { gsap } from 'gsap';
 
-const SHAPES = ['*', ':)', '✿', '→', '✳'];
-
 /**
  * Playful team section, per the Figma notes:
  * 1. clicked elements grow / shrink,
@@ -16,20 +14,20 @@ export function initTeam(): void {
   // 2. Figure changes on click.
   const shape = root.querySelector<HTMLButtonElement>('[data-shape]');
   const glyph = root.querySelector<HTMLElement>('[data-shape-glyph]');
+  const options = [...root.querySelectorAll<HTMLElement>('[data-shape-option]')];
   let shapeIndex = 0;
+  const showShape = () => options.forEach((o, i) => (o.hidden = i !== shapeIndex));
   shape?.addEventListener('click', () => {
-    if (!glyph) return;
-    shapeIndex = (shapeIndex + 1) % SHAPES.length;
+    if (!glyph || options.length === 0) return;
+    shapeIndex = (shapeIndex + 1) % options.length;
     if (reduced) {
-      glyph.textContent = SHAPES[shapeIndex]!;
+      showShape();
       return;
     }
     gsap
       .timeline()
       .to(glyph, { scale: 0, rotate: '+=120', duration: 0.2, ease: 'power2.in' })
-      .call(() => {
-        glyph.textContent = SHAPES[shapeIndex]!;
-      })
+      .call(showShape)
       .to(glyph, { scale: 1, rotate: '+=120', duration: 0.5, ease: 'back.out(2.5)' });
   });
 

@@ -6,6 +6,16 @@ import rama from '@/assets/team/rama.png';
 import folder from '@/assets/icons/folder.png';
 import hourglass from '@/assets/icons/hourglass.png';
 import cursor from '@/assets/icons/cursor.png';
+import asteriskShape from '@/assets/shapes/asterisk.svg?raw';
+import smileShape from '@/assets/shapes/smile.svg?raw';
+import arrowShape from '@/assets/shapes/arrow.svg?raw';
+
+// Figma glyph exports (lime fill + ink outline); width is relative to the 1920px frame.
+const shapes = [
+  { svg: asteriskShape, width: 117 },
+  { svg: smileShape, width: 113 },
+  { svg: arrowShape, width: 105 },
+];
 
 // Positions are percentages of the 1920x727 Figma frame.
 const members = [
@@ -61,9 +71,21 @@ const pos = (o: { left: number; top: number }) => `left:${o.left}%;top:${o.top}%
     type="button"
     data-shape
     aria-label="Cambiar figura"
-    class="absolute z-20 top-[4%] right-[8%] cursor-pointer font-glyph text-[clamp(4rem,9.24vw,11rem)] leading-none text-lime md:top-[29.7%] md:right-auto md:left-[65.3%]"
+    class="absolute z-20 top-[4%] right-[8%] grid cursor-pointer place-items-center md:top-[29.7%] md:right-auto md:left-[65.3%]"
   >
-    <span data-shape-glyph class="inline-block rotate-[25deg]">*</span>
+    <span data-shape-glyph class="grid place-items-center">
+      {
+        shapes.map((s, i) => (
+          <span
+            data-shape-option={i}
+            hidden={i !== 0}
+            class="block [&>svg]:h-auto [&>svg]:w-full"
+            style={`width:clamp(${(s.width / 30).toFixed(2)}rem,${((s.width / 1920) * 100).toFixed(2)}vw,${(s.width / 16).toFixed(2)}rem)`}
+            set:html={s.svg}
+          />
+        ))
+      }
+    </span>
   </button>
 
   <ul class="relative mt-10 flex items-end justify-center gap-6 md:static md:mt-0" aria-label="Integrantes">
