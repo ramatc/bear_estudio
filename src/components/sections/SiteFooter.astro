@@ -24,6 +24,7 @@ const year = new Date().getFullYear();
         {SITE.email}
       </a>
       <span
+        data-footer-face
         aria-hidden="true"
         class="absolute top-full right-[12%] rotate-[25deg] font-glyph text-[clamp(3rem,5.2vw,6.25rem)] leading-none text-lime"
         >:)</span
@@ -39,3 +40,16 @@ const year = new Date().getFullYear();
     </ul>
   </div>
 </footer>
+
+<script>
+  // Cycle the footer face on its own every few seconds; stays static for reduced-motion users.
+  const FACES = [':)', ';)', ':D', ':P', ':O', ':]'];
+  const face = document.querySelector<HTMLElement>('[data-footer-face]');
+  if (face && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % FACES.length;
+      face.textContent = FACES[i];
+    }, 2500);
+  }
+</script>
