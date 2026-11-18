@@ -32,7 +32,7 @@ const underlined = current;
             <a
               href={l.href}
               aria-current={current === l.id ? 'page' : undefined}
-              class:list={['hover:underline', { underline: underlined === l.id }]}
+              class:list={['nav-link', { 'is-current': underlined === l.id }]}
             >
               {l.label}
             </a>
@@ -42,3 +42,23 @@ const underlined = current;
     </ul>
   </nav>
 </header>
+
+<style>
+  .nav-link {
+    background: linear-gradient(currentColor, currentColor) no-repeat left bottom / 0% 1px;
+    padding-bottom: 0.15em;
+    transition: background-size 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible,
+  .nav-link.is-current {
+    background-size: 100% 1px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link {
+      transition: none;
+    }
+  }
+</style>
