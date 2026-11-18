@@ -2,6 +2,8 @@
 import { SITE } from '@/config/site';
 
 const year = new Date().getFullYear();
+// Formspree form ID (https://formspree.io); submissions are emailed to the studio.
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID ?? '';
 ---
 
 <footer id="contacto" class="relative overflow-hidden bg-[#1d1d1d] px-gutter pt-[clamp(3rem,5.7vw,7rem)] pb-[clamp(2rem,4vw,5rem)] text-paper">
@@ -11,9 +13,39 @@ const year = new Date().getFullYear();
   </a>
 
   <div class="mt-[clamp(3rem,6vw,7rem)] flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
-    <p data-reveal class="font-display text-[clamp(1.75rem,2.9vw,3.5rem)] leading-[0.912] uppercase">
-      Estudio creativo<br />en Bs As, Arg.
-    </p>
+    <div data-reveal class="w-full md:w-auto">
+      <p class="font-display text-[clamp(1.75rem,2.9vw,3.5rem)] leading-[0.912] uppercase">
+        Estudio creativo<br />en Bs As, Arg.
+      </p>
+
+      <form
+        data-mail-form
+        action={`https://formspree.io/f/${formspreeId}`}
+        method="POST"
+        class="mt-[clamp(1.5rem,2.5vw,3rem)] w-full md:w-[clamp(18rem,26vw,31rem)]"
+      >
+        <label for="footer-email" class="sr-only">Tu email</label>
+        <div class="flex items-center border-b border-paper/60 transition-colors focus-within:border-lime">
+          <input
+            id="footer-email"
+            type="email"
+            name="email"
+            required
+            autocomplete="email"
+            placeholder="Dejanos tu mail"
+            class="min-w-0 flex-1 bg-transparent py-3 text-[clamp(1rem,1.03vw,1.25rem)] text-paper placeholder:text-paper/50 focus:outline-none"
+          />
+          <button
+            type="submit"
+            aria-label="Enviar"
+            class="cursor-pointer px-2 py-3 font-display text-[clamp(1.25rem,1.5vw,1.8rem)] leading-none transition-colors hover:text-lime disabled:opacity-50"
+          >
+            →
+          </button>
+        </div>
+        <p data-mail-status role="status" aria-live="polite" class="mt-2 min-h-[1.5em] text-[clamp(0.85rem,0.9vw,1rem)] text-paper/70"></p>
+      </form>
+    </div>
 
     <div data-reveal class="relative md:mr-[2%]">
       <h2 class="font-display text-[clamp(3rem,5.34vw,6.4rem)] leading-[0.912]">CHARLEMOS</h2>
@@ -52,4 +84,25 @@ const year = new Date().getFullYear();
       face.textContent = FACES[i];
     }, 2500);
   }
+
+  // Submit the mail form in place so visitors stay on the page.
+  const form = document.querySelector<HTMLFormElement>('[data-mail-form]');
+  const status = form?.querySelector<HTMLElement>('[data-mail-status]');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!status) return;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (button) button.disabled = true;
+    status.textContent = 'Enviando…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.textContent = '¡Gracias! Te escribimos pronto.';
+    } catch {
+      status.textContent = 'No se pudo enviar. Probá de nuevo.';
+    } finally {
+      if (button) button.disabled = false;
+    }
+  });
 </script>
