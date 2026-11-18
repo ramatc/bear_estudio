@@ -12,8 +12,8 @@ const links = [
   { id: 'contacto', href: '#contacto', label: 'Contacto' },
 ] as const;
 
-// Home underlines "Contacto" as the primary call to action; inner pages underline the current section.
-const underlined = current ?? 'contacto';
+// Inner pages underline the current section; every link underlines on hover.
+const underlined = current;
 ---
 
 <header class="px-gutter pt-[clamp(1.25rem,3.2vw,3.85rem)]">
@@ -32,7 +32,7 @@ const underlined = current ?? 'contacto';
             <a
               href={l.href}
               aria-current={current === l.id ? 'page' : undefined}
-              class:list={['transition-opacity hover:opacity-60', { underline: underlined === l.id }]}
+              class:list={['hover:underline', { underline: underlined === l.id }]}
             >
               {l.label}
             </a>
