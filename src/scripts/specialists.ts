@@ -49,13 +49,14 @@ export function initSpecialists(): void {
   const target = section.querySelector<HTMLElement>('[data-typewriter]');
   if (!target || reduced) return;
 
+  const follow = section.querySelector<HTMLElement>('[data-typewriter-follow]');
   const chars = splitChars(target);
-  gsap.set(chars, { opacity: 0 });
-  gsap.to(chars, {
-    opacity: 1,
-    duration: 0.01,
-    stagger: 0.035,
-    ease: 'none',
-    scrollTrigger: { trigger: target, start: 'top 80%', once: true },
-  });
+  const followChars = follow ? splitChars(follow) : [];
+  gsap.set([...chars, ...followChars], { opacity: 0 });
+
+  const tl = gsap.timeline({ scrollTrigger: { trigger: target, start: 'top 80%', once: true } });
+  tl.to(chars, { opacity: 1, duration: 0.01, stagger: 0.035, ease: 'none' });
+  if (followChars.length) {
+    tl.to(followChars, { opacity: 1, duration: 0.01, stagger: 0.035, ease: 'none' }, '+=0.3');
+  }
 }
