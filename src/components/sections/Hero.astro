@@ -1,5 +1,8 @@
 ---
 import ContactButton from '@/components/ui/ContactButton.astro';
+import smile from '@/assets/shapes/smile.svg?raw';
+import asterisk from '@/assets/shapes/asterisk.svg?raw';
+import arrow from '@/assets/shapes/arrow.svg?raw';
 ---
 
 <section
@@ -20,9 +23,9 @@ import ContactButton from '@/components/ui/ContactButton.astro';
     <span
       data-glyph
       aria-hidden="true"
-      class="pointer-events-none absolute top-0 right-[7.5%] rotate-[25deg] font-glyph text-[clamp(3rem,7vw,8.25rem)] leading-none text-lime"
-      >:)</span
-    >
+      class="pointer-events-none absolute top-0 right-[7.5%] w-[clamp(2.5rem,5.9vw,7rem)] [&>svg]:h-auto [&>svg]:w-full"
+      set:html={smile}
+    />
   </div>
 
   <div class="relative">
@@ -38,15 +41,15 @@ import ContactButton from '@/components/ui/ContactButton.astro';
     <span
       data-glyph
       aria-hidden="true"
-      class="pointer-events-none absolute top-[30%] right-[20%] hidden -rotate-[42deg] font-glyph text-[clamp(3.75rem,9.3vw,11.25rem)] leading-none text-lime sm:block"
-      >*</span
-    >
+      class="pointer-events-none absolute top-[30%] right-[20%] hidden w-[clamp(2.75rem,6.1vw,7.3rem)] sm:block [&>svg]:h-auto [&>svg]:w-full"
+      set:html={asterisk}
+    />
     <a
       href="#especialistas"
       aria-label="Bajar a la siguiente sección"
-      class="absolute right-0 bottom-0 rotate-90 font-glyph text-[clamp(2.6rem,5.9vw,7rem)] leading-[0.6] text-lime transition-transform hover:translate-x-2"
-      >→</a
-    >
+      class="absolute right-0 bottom-0 block w-[clamp(2.25rem,5.5vw,6.6rem)] transition-transform hover:translate-y-2 [&>svg]:h-auto [&>svg]:w-full"
+      set:html={arrow}
+    />
   </div>
 </section>
 
