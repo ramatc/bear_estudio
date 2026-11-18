@@ -78,7 +78,7 @@ const stickers = [
     }
   }
 
-  /* Pointer devices: stickers stay hidden until their service is hovered or focused. */
+  /* Pointer devices: stickers stay hidden until the pointer moves near them; words only change color. */
   @media (hover: hover) and (min-width: 768px) {
     .sticker {
       opacity: 0;
@@ -90,10 +90,6 @@ const stickers = [
         translate 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .services:has([data-service='web']:is(:hover, :focus-visible)) [data-for='web'],
-    .services:has([data-service='branding']:is(:hover, :focus-visible)) [data-for='branding'],
-    .services:has([data-service='redes']:is(:hover, :focus-visible)) [data-for='redes'],
-    .services:has([data-service='contenido']:is(:hover, :focus-visible)) [data-for='contenido'],
     .sticker.is-near {
       opacity: 1;
       scale: 1;
