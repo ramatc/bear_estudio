@@ -24,9 +24,16 @@ const ringText = 'BUENOS AIRES, ARGENTINA - BUENOS AIRES, ARGENTINA - ';
     class="absolute inset-[30%] block transition-[opacity,scale] duration-300 group-hover:scale-75 group-hover:opacity-0 [&>svg]:size-full [&>svg_path]:fill-current"
     set:html={paw}
   />
-  <span
-    class="absolute inset-0 grid scale-75 place-items-center font-glyph text-[clamp(3.5rem,5vw,6rem)] leading-none text-lime opacity-0 transition-[opacity,scale] duration-300 group-hover:scale-100 group-hover:opacity-100"
+  <!-- Five-arm asterisk: outlines drawn first, fills on top, so arms merge without inner seams. -->
+  <svg
+    viewBox="-50 -50 100 100"
+    class="absolute inset-[27%] size-[46%] scale-75 text-lime opacity-0 transition-[opacity,scale] duration-300 group-hover:scale-100 group-hover:opacity-100"
   >
-    *
-  </span>
+    <g stroke="#1d1d1d" stroke-width="6" fill="#1d1d1d">
+      {[0, 72, 144, 216, 288].map((a) => <rect x="-9" y="-46" width="18" height="46" transform={`rotate(${a})`} />)}
+    </g>
+    <g class="fill-current">
+      {[0, 72, 144, 216, 288].map((a) => <rect x="-9" y="-46" width="18" height="46" transform={`rotate(${a})`} />)}
+    </g>
+  </svg>
 </div>
