@@ -42,16 +42,10 @@ const hasMore = projects.length > initial;
 
   <div class="mt-[clamp(1.5rem,2.5vw,3rem)] flex justify-end">
     {
-      hasMore ? (
+      hasMore && (
         <button type="button" data-more class="cursor-pointer font-display text-nav uppercase underline hover:text-lime">
           Ver más
         </button>
-      ) : (
-        Heading === 'h2' && (
-          <a href="/proyectos" class="font-display text-nav uppercase underline hover:text-lime">
-            Ver más
-          </a>
-        )
       )
     }
   </div>
