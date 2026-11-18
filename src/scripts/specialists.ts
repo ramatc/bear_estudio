@@ -55,7 +55,7 @@ export function initSpecialists(): void {
   gsap.set([...chars, ...followChars], { opacity: 0 });
 
   const tl = gsap.timeline({ scrollTrigger: { trigger: target, start: 'top 80%', once: true } });
-  tl.to(chars, { opacity: 1, duration: 0.01, stagger: 0.035, ease: 'none' });
+  tl.to(chars, { opacity: 1, duration: 0.01, stagger: 0.022, ease: 'none' });
   if (followChars.length) {
     tl.to(followChars, { opacity: 1, duration: 0.01, stagger: 0.035, ease: 'none' }, '+=0.3');
   }
