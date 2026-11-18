@@ -9,7 +9,8 @@ const { class: className = '' } = Astro.props;
 const ringText = 'ARGENTINA - BUENOS AIRES - ';
 ---
 
-<div class:list={['relative aspect-square', className]} aria-hidden="true">
+<!-- Only the ring text spins; hovering swaps the paw for the lime asterisk. -->
+<div class:list={['group relative aspect-square', className]} aria-hidden="true">
   <svg data-spin viewBox="0 0 200 200" class="absolute inset-0 size-full">
     <defs>
       <path id="paw-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
@@ -19,5 +20,13 @@ const ringText = 'ARGENTINA - BUENOS AIRES - ';
       <textPath href="#paw-ring" textLength="489" lengthAdjust="spacing">{ringText}</textPath>
     </text>
   </svg>
-  <span class="absolute inset-[30%] block [&>svg]:size-full [&>svg_path]:fill-current" set:html={paw} />
+  <span
+    class="absolute inset-[30%] block transition-[opacity,scale] duration-300 group-hover:scale-75 group-hover:opacity-0 [&>svg]:size-full [&>svg_path]:fill-current"
+    set:html={paw}
+  />
+  <span
+    class="absolute inset-0 grid scale-75 place-items-center font-glyph text-[clamp(3.5rem,5vw,6rem)] leading-none text-lime opacity-0 transition-[opacity,scale] duration-300 group-hover:scale-100 group-hover:opacity-100"
+  >
+    *
+  </span>
 </div>
